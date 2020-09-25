@@ -1,4 +1,4 @@
-if (mpi) 
+if (mpi)
     # ~~ The actual target library ~~
     add_library(cntr SHARED
         fourier.cpp
@@ -47,7 +47,7 @@ else(mpi)
         cntr_vie2_extern_templates.cpp
         cntr_getset_extern_templates.cpp
         )
-    
+
 endif(mpi)
 
 
@@ -64,8 +64,11 @@ file(GLOB cntr_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 set_target_properties(cntr PROPERTIES PUBLIC_HEADER "${cntr_HEADERS}")
 
+target_include_directories(cntr INTERFACE $<INSTALL_INTERFACE:include>)
+
 # ~~ Installation targets ~~
 install(TARGETS cntr
+        EXPORT nessi-config
         LIBRARY DESTINATION lib
         PUBLIC_HEADER DESTINATION include/cntr)
 if (hdf5)
@@ -74,6 +77,5 @@ if (hdf5)
 endif (hdf5)
 install(DIRECTORY cntr/utils DESTINATION include/cntr
         FILES_MATCHING PATTERN "*.hpp")
-install(FILES utils/read_inputfile.hpp DESTINATION include/cntr/utils)	
-
-
+install(FILES utils/read_inputfile.hpp DESTINATION include/cntr/utils)
+install(EXPORT nessi-config DESTINATION share/nessi/cmake)
