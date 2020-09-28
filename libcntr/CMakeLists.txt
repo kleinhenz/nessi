@@ -39,7 +39,6 @@ if (hdf5)
   #message(STATUS "${HDF5_INCLUDE_DIR}")
   #list(APPEND COMMON_LIBS ${HDF5_LIB})
   #message(STATUS "${HDF5_LIB}")
-  add_definitions("-DCNTR_USE_HDF5")
 endif (hdf5)
 
 # ~~ Add Eigen ~~
