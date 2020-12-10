@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.9.0 FATAL_ERROR)
 project("libcntr")
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
@@ -12,8 +12,6 @@ if (omp)
     message(STATUS "Building with OpenMP")
     find_package(OpenMP REQUIRED)
     add_definitions("-DCNTR_USE_OMP")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif ()
 option(mpi "Build with OpenMPI support" OFF)
 if (mpi)
@@ -32,13 +30,13 @@ endif ()
 
 # ~~ Add HDF5 ~~
 if (hdf5)
-  #find_library(HDF5_LIB hdf5)
-  find_package(HDF5)
-  set(HDF5_LIB ${LIBS} ${HDF5_LIBRARIES})
-  include_directories(${HDF5_INCLUDE_DIR})
-  #message(STATUS "${HDF5_INCLUDE_DIR}")
-  #list(APPEND COMMON_LIBS ${HDF5_LIB})
-  #message(STATUS "${HDF5_LIB}")
+  find_package(HDF5 REQUIRED COMPONENTS C)
+  message(STATUS "${HDF5_INCLUDE_DIR}")
+
+  add_library(hdf5::base IMPORTED INTERFACE)
+  set_property(TARGET hdf5::base PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${HDF5_INCLUDE_DIRS})
+  set_property(TARGET hdf5::base PROPERTY INTERFACE_LINK_LIBRARIES ${HDF5_LIBRARIES})
+  set_property(TARGET hdf5::base PROPERTY INTERFACE_COMPILE_DEFINITIONS ${HDF5_DEFINITIONS})
 endif (hdf5)
 
 # ~~ Add Eigen ~~

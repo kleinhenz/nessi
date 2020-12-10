@@ -55,8 +55,13 @@ set_property(TARGET cntr APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
 
 if (hdf5)
     add_subdirectory(hdf5)
-    target_link_libraries(cntr cntr_hdf5)
+    target_link_libraries(cntr PUBLIC cntr_hdf5)
 endif (hdf5)
+
+if (omp)
+  target_link_libraries(cntr PUBLIC OpenMP::OpenMP_CXX)
+  target_compile_definitions(cntr PUBLIC "-DCNTR_USE_OMP")
+endif(omp)
 
 # Add all headers as public-headers to `libcntr`. That way they will
 # automatically be installed alongside `libcntr`.
