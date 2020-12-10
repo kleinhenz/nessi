@@ -50,6 +50,7 @@ else(mpi)
 
 endif(mpi)
 
+target_link_libraries(cntr PUBLIC Eigen3::Eigen)
 
 set_property(TARGET cntr APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
 

@@ -40,8 +40,8 @@ if (hdf5)
 endif (hdf5)
 
 # ~~ Add Eigen ~~
-find_package(Eigen3 REQUIRED)
-include_directories(SYSTEM ${EIGEN3_INCLUDE_DIR})
+find_package(Eigen3 REQUIRED NO_MODULE)
+message(STATUS "Eigen: ${EIGEN3_INCLUDE_DIR}")
 
 # ~~ Relocatable code for shared library ~~
 set(GCC_RELOCATABLE_FLAGS "-fPIC")
